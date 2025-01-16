@@ -16,34 +16,38 @@ short_category = {
 }
 
 URL = "https://atcoder.jp/contests/?lang=ja"
-req = requests.get(URL)
 
-# サイト情報の取得
-bsObj = BeautifulSoup(req.content, "html.parser")
+def fetch_contests():
 
-# 予定されたコンテストのhtmlの取得
-contests_html = bsObj.find(id="contest-table-upcoming").find("tbody").find_all("tr")
+    req = requests.get(URL)
 
-# [開催時刻, コンテスト名, 時間, rated対象, コンテストリンク, A(B|R|G|H)C]
-contests_info = [["" for i in range(5)] for j in range(len(contests_html))]
+    # サイト情報の取得
+    bsObj = BeautifulSoup(req.content, "html.parser")
 
-# 予定されたコンテストをcontests_infoに代入
-for table_index, contest_html in enumerate(contests_html):
+    # 予定されたコンテストのhtmlの取得
+    contests_html = bsObj.find(id="contest-table-upcoming").find("tbody").find_all("tr")
 
-    contest_info = contest_html.find_all("td")
+    # [開催時刻, コンテスト名, 時間, rated対象, コンテストリンク, A(B|R|G|H)C]
+    contests_info = [["" for i in range(5)] for j in range(len(contests_html))]
 
-    for info_id, detail in enumerate(contest_info):
+    # 予定されたコンテストをcontests_infoに代入
+    for table_index, contest_html in enumerate(contests_html):
 
-        # contests_info[table_index][info_id] = detail.text.strip()
-        contests_info[table_index][info_id] = detail.get_text().strip()
+        contest_info = contest_html.find_all("td")
 
-# 不揃いな文字列の成形
-for table_index, contest_info in enumerate(contests_info):
-    contests_info[table_index][1] = contest_info[1][4:]
+        for info_id, detail in enumerate(contest_info):
+
+            contests_info[table_index][info_id] = detail.get_text().strip()
+
+    # 不揃いな文字列の成形
+    for table_index, contest_info in enumerate(contests_info):
+        contests_info[table_index][1] = contest_info[1][4:]
 
 
-for table_index, contest_info in enumerate(contests_info):
-    for contest_category in CATEGORY:
+    for table_index, contest_info in enumerate(contests_info):
+        for contest_category in CATEGORY:
 
-        if(contest_category in contest_info[1] and CATEGORY[contest_category]):
-            contests_info[table_index][4] = short_category[contest_category]
+            if(contest_category in contest_info[1] and CATEGORY[contest_category]):
+                contests_info[table_index][4] = short_category[contest_category]
+
+    return contests_info
