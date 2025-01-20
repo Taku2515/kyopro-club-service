@@ -8,6 +8,6 @@ app = FastAPI()
 def read_root():
     return {"Hello": "World"}
 
-@app.get("/fetch")
+@app.get("/atcoder/upcoming_contests")
 def fetch_root():
     return create_json.get_contests_json()
