@@ -7,14 +7,15 @@ def get_contests_json():
 
     contests_info = fetch_contests()
 
-    contests_json = {}
+    contests_json = []
 
     for id, contest in enumerate(contests_info):
 
         contest_json = {}
         for index, detail in enumerate(contest):
             contest_json[column[index]] = detail
-        contests_json[id] = contest_json
+        contests_json.append(contest_json)
+        # contests_json[id] = contest_json
 
     json_data = json.dumps(contests_json, ensure_ascii=False, indent=2)
 
