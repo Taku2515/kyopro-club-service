@@ -18,13 +18,17 @@ def fetch_test1():
     return test_date.fetch_not_start_time_json(test_date.not_start_time_json)
 
 @app.get("/atcoder/test2")
-def fetch_test1():
+def fetch_test2():
     return test_date.fetch_not_start_time_json(test_date.contest_type_json)
 
 @app.get("/atcoder/test3")
-def fetch_test1():
+def fetch_test3():
     return test_date.fetch_not_start_time_json(test_date.date_format_json)
 
 @app.get("/atcoder/test4")
-def fetch_test1():
+def fetch_test4():
     return test_date.fetch_not_start_time_json(test_date.date_cornercase)
+
+@app.get("/atcoder/test5")
+def fetch_test5():
+    return test_date.fetch_not_start_time_json(test_date.trigger_test)
